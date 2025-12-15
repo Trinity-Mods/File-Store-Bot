@@ -11,6 +11,6 @@ polar:
 buy_me_a_coffee:
 thanks_dev:
 custom:
-  - 'https://t.me/the_universal_being'  # Telegram Contact
-  - 'upi://pay?pa=sendrajbooks@fam&pn=Raj%20Som'  # UPI Payment Link
-
+  # Primary Support Options:
+  - 'https://payments.cashfree.com/forms?code=trinity-mods-donation'  # UPI/INR (Cashfree Payment Form)
+  - 'https://pay.cryptomus.com/wallet/823249d5-894b-403b-bd01-ef2394f2c472' # USDT (BSC) via Cryptomus
