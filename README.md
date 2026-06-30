@@ -38,7 +38,6 @@
   <img src="https://img.shields.io/badge/License-MIT-3DDC84?style=flat-square&logo=gnu&logoColor=white"/>
 </p>
 
-<!-- 🌈 ANIMATED DIVIDER -->
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
 <!-- ════════════════════════════ ABOUT ════════════════════════════ -->
@@ -50,13 +49,13 @@
 <tr>
 <td>
 
-**File Store Bot** by **Trinity Mods** is a powerful yet beginner-friendly Telegram bot for
-**secure file storage & sharing** via private / direct links. Built with minimal code and maximum
+<b>File Store Bot</b> by <b>Trinity Mods</b> is a powerful yet beginner-friendly Telegram bot for
+<b>secure file storage &amp; sharing</b> via private / direct links. Built with minimal code and maximum
 performance — perfect for developers and non-coders alike.
 
-> 🌀 **Fastest-in-class performance with a minimal codebase.**
-> 🔧 **Edit `config.py`, `start.py`, `cbb.py` — or just `start.py` — and you're live.**
-> 🚀 **Beginner-friendly, deploy-ready in under 2 minutes.**
+🌀 <b>Fastest-in-class performance with a minimal codebase.</b><br>
+🔧 <b>Edit config.py, start.py, cbb.py — or just start.py — and you're live.</b><br>
+🚀 <b>Beginner-friendly, deploy-ready in under 2 minutes.</b>
 
 </td>
 <td>
@@ -76,11 +75,11 @@ performance — perfect for developers and non-coders alike.
   <img src="https://capsule-render.vercel.app/api?type=soft&color=gradient&customColorList=20,12,6&height=58&section=header&text=%F0%9F%86%95%20Changelog%20Highlights&fontSize=28&fontColor=ffffff&animation=twinkling&fontAlignY=58" width="68%"/>
 </p>
 
-- 🔐 **Code System** — share access via simple codes instead of long URLs
-- 🔁 **Superb Speed** — instantly convert files into links
-- 🔗 **Global Shortener Support** — automatically add a shortener to all links
-- ⏳ **Expiry Timer** — automatically delete files after a defined period
-- 💎 **Premium Mode** — monetize your content with tiered access control
+- 🔐 <b>Code System</b> — share access via simple codes instead of long URLs
+- 🔁 <b>Superb Speed</b> — instantly convert files into links
+- 🔗 <b>Global Shortener Support</b> — automatically add a shortener to all links
+- ⏳ <b>Expiry Timer</b> — automatically delete files after a defined period
+- 💎 <b>Premium Mode</b> — monetize your content with tiered access control
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
@@ -91,14 +90,14 @@ performance — perfect for developers and non-coders alike.
 
 | | Feature |
 |---|---|
-| 📎 | **Multi-file support** with custom captions |
-| 🔒 | **Anti-forwarding + Anti-saving** (protected content) |
-| ➕ | **Force-subscribe** up to 4 channels / groups |
-| 🛠️ | Fully **customizable** (start, caption, force-sub, etc.) |
-| 🔗 | Optional **shortener** integration with token-verification mode |
-| ⏳ | **Auto-expiry** timers on stored files |
-| 💸 | Inbuilt **UPI / QR** payment system for premium content |
-| ⚡ | **Minimal setup** — perfect for beginners and non-coders |
+| 📎 | <b>Multi-file support</b> with custom captions |
+| 🔒 | <b>Anti-forwarding + Anti-saving</b> (protected content) |
+| ➕ | <b>Force-subscribe</b> up to 4 channels / groups |
+| 🛠️ | Fully <b>customizable</b> (start, caption, force-sub, etc.) |
+| 🔗 | Optional <b>shortener</b> integration with token-verification mode |
+| ⏳ | <b>Auto-expiry</b> timers on stored files |
+| 💸 | Inbuilt <b>UPI / QR</b> payment system for premium content |
+| ⚡ | <b>Minimal setup</b> — perfect for beginners and non-coders |
 
 <img src="https://user-images.githubusercontent.com/74038190/212284158-e840e285-664b-44d7-b79b-e264b5e54825.gif" width="100%">
 
@@ -122,20 +121,20 @@ performance — perfect for developers and non-coders alike.
 <tr>
 <td>
 
-**🐳 Docker**
-```bash
+<b>🐳 Docker</b>
+<pre>
 git clone https://github.com/Trinity-Mods/filestore.git
 cd filestore
-docker build -t filestore . && docker run filestore
-```
+docker build -t filestore . &amp;&amp; docker run filestore
+</pre>
 
-**🖥️ VPS (manual)**
-```bash
+<b>🖥️ VPS (manual)</b>
+<pre>
 git clone https://github.com/Trinity-Mods/filestore.git
 cd filestore
 pip3 install -r requirements.txt
 python3 main.py
-```
+</pre>
 
 </td>
 <td>
@@ -194,14 +193,14 @@ python3 main.py
 
 <p align="center">
   <a href="https://t.me/the_universal_being">
-    <img src="https://img.shields.io/badge/Ragnar_Lothbrok-1e3a8a?style=for-the-badge&logo=telegram&logoColor=white" />
+    <img src="https://img.shields.io/badge/The_Godfather-1e3a8a?style=for-the-badge&logo=telegram&logoColor=white" />
     <img src="https://img.shields.io/badge/Mastermind-4f46e5?style=for-the-badge" />
   </a>
 </p>
 <p align="center">
-  <a href="https://t.me/velvetexams">
-    <img src="https://img.shields.io/badge/Dr.Aarav_Mehta-6b21a8?style=for-the-badge&logo=telegram&logoColor=white" />
-    <img src="https://img.shields.io/badge/Assistant-9333ea?style=for-the-badge" />
+  <a href="https://t.me/lovingcosmos">
+    <img src="https://img.shields.io/badge/Shrey-6b21a8?style=for-the-badge&logo=telegram&logoColor=white" />
+    <img src="https://img.shields.io/badge/Co--Developer-9333ea?style=for-the-badge" />
   </a>
 </p>
 <p align="center">
