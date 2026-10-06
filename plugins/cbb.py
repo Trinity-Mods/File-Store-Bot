@@ -5,52 +5,38 @@
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
 
-from pyrogram import __version__
+# 🔘 Start-menu buttons: About · Premium · Back · Close
+
+from pyrogram import filters
+from pyrogram.types import CallbackQuery
+
 from bot import Bot
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from core import ui
 
-from config import PRICE1, PRICE2, PRICE3, PRICE4, PRICE5, UPI_ID, UPI_IMAGE_URL, SCREENSHOT_URL
 
-@Bot.on_callback_query()
+@Bot.on_callback_query(filters.regex(r"^(about|close|buy_prem|home)$"))
 async def cb_handler(client: Bot, query: CallbackQuery):
     data = query.data
-    if data == "about":
-        await query.message.edit_text(
-            text = f"<b>○ More Bots: <a href='https://github.com/Trinity-Mods'>Trinity Mods</a>\n○ Language: <a href='https://www.python.org/'>Python 3</a>\n○ Fueled By: <a href='https://t.me/infohub_updates'>InfoHub Updates</a>\n○ Server: <a href='https://www.ubuntu.com/'>Private VPS</a></b>",
-            disable_web_page_preview = True,
-            reply_markup = InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton("🔒 Close", callback_data = "close")
-                    ]
-                ]
-            )
-        )
-    elif data == "close":
+    if data == "close":
+        await query.answer()
         await query.message.delete()
         try:
             await query.message.reply_to_message.delete()
-        except:
+        except Exception:
             pass
+        return
+    if data == "about":
+        text, markup = ui.about_panel()
     elif data == "buy_prem":
-        await query.message.edit_text(
-            text=f"👋 @{query.from_user.username}, here are our Prime Membership plans – {PRICE1}/7 days, {PRICE2}/1 month, {PRICE3}/3 months, {PRICE4}/6 months, {PRICE5}/1 year | 💵 UPI ID: <code>{UPI_ID}</code> | 📸 <a href='{UPI_IMAGE_URL}'>Scan QR Code</a> to pay | 🧾 After payment, send your screenshot | 💬 For help or alternative payment methods, contact @the_universal_being",
-            disable_web_page_preview=True,
-            reply_markup = InlineKeyboardMarkup(
-                [   
-                    [
-                        InlineKeyboardButton("ꜱᴇɴᴅ ᴘᴀʏᴍᴇɴᴛ ꜱᴄʀᴇᴇɴꜱʜᴏᴛ 📸", url=(SCREENSHOT_URL))
-                    ],
-                    [
-                        InlineKeyboardButton("🔒 Close", callback_data = "close")
-                    ]
-                ]
-            )
-        )
+        text, markup = ui.premium_panel(query.from_user)
+    else:
+        text, markup = ui.start_panel(query.from_user)
+    await query.answer()
+    await ui.edit_panel(client, query.message, text, markup)
 
 # ────────────────────────────────────────────────────────────────
 
@@ -59,6 +45,6 @@ async def cb_handler(client: Bot, query: CallbackQuery):
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
-# ────────────────────────────────────────────────────────────────  
+# ────────────────────────────────────────────────────────────────

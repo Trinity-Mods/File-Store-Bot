@@ -5,9 +5,11 @@
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
+
+# 🔌 plugins — every Telegram command & button handler. Pyrofork loads all files in this folder at startup.
 
 from aiohttp import web
 from route import routes
@@ -25,6 +27,6 @@ async def web_server():
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
