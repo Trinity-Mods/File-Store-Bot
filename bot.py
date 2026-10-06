@@ -5,35 +5,24 @@
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
 
-from aiohttp import web
-from database.database import full_adminbase
-from plugins import web_server
-from pyrogram import Client
-from pyrogram.enums import ParseMode
+# 🤖 The bot client. On startup it checks the database channel and the force-sub chats, loads admins and
+# live settings, restores pending auto-deletes and starts the health-check web server.
+
 import sys
-from pyromod import listen
 from datetime import datetime
 
-from config import ADMINS, API_HASH, APP_ID, LOGGER, TG_BOT_TOKEN, TG_BOT_WORKERS, FORCE_SUB_CHANNEL,FORCE_SUB_CHANNEL2, FORCE_SUB_CHANNEL3, FORCE_SUB_CHANNEL4, CHANNEL_ID, PORT, OWNER_ID
+from aiohttp import web
+from pyrogram import Client
+from pyrogram.enums import ParseMode
 
-
-# fix for current pyrogram 
-from pyrogram import utils
-
-def get_peer_type_new(peer_id: int) -> str:
-    peer_id_str = str(peer_id)
-    if not peer_id_str.startswith("-"):
-        return "user"
-    elif peer_id_str.startswith("-100"):
-        return "channel"
-    else:
-        return "chat"
-utils.get_peer_type = get_peer_type_new
-
+from config import ADMINS, API_HASH, APP_ID, CHANNEL_ID, LOGGER, OWNER_ID, PORT, TG_BOT_TOKEN, TG_BOT_WORKERS
+from core import __version__, access, delivery, fsub
+from database.database import dbclient, ensure_indexes, full_adminbase, ping_database
+from plugins import web_server
 
 
 class Bot(Client):
@@ -46,97 +35,91 @@ class Bot(Client):
                 "root": "plugins"
             },
             workers=TG_BOT_WORKERS,
-            bot_token=TG_BOT_TOKEN
+            bot_token=TG_BOT_TOKEN,
+            parse_mode=ParseMode.HTML,
         )
         self.LOGGER = LOGGER
-
-    async def start(self):
-        await super().start()
-        usr_bot_me = await self.get_me()
+        self.username = None
+        self.db_channel = None
         self.uptime = datetime.now()
-        print(ADMINS)
-        if FORCE_SUB_CHANNEL:
-            try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
-                if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL)).invite_link
-                self.invitelink = link
-            except Exception as a:
-                self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL}")
-                sys.exit()
-        if FORCE_SUB_CHANNEL2:
-            try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL2)).invite_link
-                if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL2)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL2)).invite_link
-                self.invitelink2 = link
-            except Exception as a:
-                self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL2}")
-                sys.exit()
-        if FORCE_SUB_CHANNEL3:
-            try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL3)).invite_link
-                if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL3)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL3)).invite_link
-                self.invitelink3 = link
-            except Exception as a:
-                self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL2}")
-                sys.exit()
-        if FORCE_SUB_CHANNEL4:
-            try:
-                link = (await self.get_chat(FORCE_SUB_CHANNEL4)).invite_link
-                if not link:
-                    await self.export_chat_invite_link(FORCE_SUB_CHANNEL4)
-                    link = (await self.get_chat(FORCE_SUB_CHANNEL4)).invite_link
-                self.invitelink4 = link
-            except Exception as a:
-                self.LOGGER(__name__).warning(a)
-                self.LOGGER(__name__).warning("Bot can't Export Invite link from Force Sub Channel!")
-                self.LOGGER(__name__).warning(f"Please Double check the FORCE_SUB_CHANNEL value and Make sure Bot is Admin in channel with Invite Users via Link Permission, Current Force Sub Channel Value: {FORCE_SUB_CHANNEL4}")
-                sys.exit()
+        self._web_runner = None
+
+    async def start(self, *args, **kwargs):
+        await super().start(*args, **kwargs)
+        log = self.LOGGER(__name__)
+        usr_bot_me = await self.get_me()
+        self.username = usr_bot_me.username
+        self.uptime = datetime.now()
+
+        try:
+            await ping_database()
+        except Exception as e:
+            log.warning(e)
+            log.warning("Couldn't connect to MongoDB! Double check DB_URL, and in MongoDB Atlas → Network Access "
+                        "allow connections from anywhere (0.0.0.0/0).")
+            sys.exit(1)
+        await ensure_indexes()
+        settings = await access.load()
+
         try:
             db_channel = await self.get_chat(CHANNEL_ID)
             self.db_channel = db_channel
             test = await self.send_message(chat_id = db_channel.id, text = "Test Message")
             await test.delete()
         except Exception as e:
-            self.LOGGER(__name__).warning(e)
-            self.LOGGER(__name__).warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
-            sys.exit()
-        
-        initadmin = await full_adminbase()
-        for x in initadmin:
-            if x in ADMINS:
-                continue
-            ADMINS.append(x)
-        await self.send_message(
-            chat_id=OWNER_ID,
-            text="Bot has started! 😉"
+            log.warning(e)
+            log.warning(f"Make Sure bot is Admin in DB Channel, and Double check the CHANNEL_ID Value, Current Value {CHANNEL_ID}")
+            sys.exit(1)
+
+        try:
+            chats = await fsub.setup(self)
+        except fsub.SetupError as e:
+            log.warning(e.error)
+            log.warning("Bot can't use a Force Sub chat! Make sure the bot is Admin there with the "
+                        f"'Invite Users via Link' permission and double check the value. Current value: {e.chat}")
+            sys.exit(1)
+
+        for admin_id in await full_adminbase():
+            if admin_id not in ADMINS:
+                ADMINS.append(admin_id)
+
+        restored = await delivery.restore_jobs(self)
+
+        self._web_runner = web.AppRunner(await web_server())
+        await self._web_runner.setup()
+        await web.TCPSite(self._web_runner, "0.0.0.0", PORT).start()
+
+        if settings.fsub_on and not chats:
+            log.warning("Force-sub is enabled but no FORCE_SUB_CHANNEL is set — that step is skipped.")
+        log.info(
+            f"File Store Bot v{__version__} is live as @{self.username} | mode: {settings.mode} | "
+            f"force-sub chats: {len(chats)} | referral goal: {settings.referral_count} | "
+            f"auto-delete jobs restored: {restored}"
         )
-
-        self.set_parse_mode(ParseMode.HTML)
-        self.LOGGER(__name__).info(f"Bot made by @the_universal_being!")
-        self.username = usr_bot_me.username
-
-
-        #web-response
-        app = web.AppRunner(await web_server())
-        await app.setup()
-        bind_address = "0.0.0.0"
-        await web.TCPSite(app, bind_address, PORT).start()
+        self.LOGGER(__name__).info("Bot made by @the_universal_being!")
+        try:
+            await self.send_message(
+                chat_id=OWNER_ID,
+                text=(
+                    "<b>Bot has started! 😉</b>\n\n"
+                    f"🔁 ᴍᴏᴅᴇ: <b>{access.MODE_LABELS[settings.mode]}</b>\n"
+                    f"📢 ꜰᴏʀᴄᴇ-ꜱᴜʙ ᴄʜᴀᴛꜱ: <b>{len(chats)}</b>\n"
+                    f"👥 ʀᴇꜰᴇʀʀᴀʟ ɢᴏᴀʟ: <b>{settings.referral_count}</b>\n\n"
+                    "<i>ꜱᴇɴᴅ /settings ᴛᴏ ᴄʜᴀɴɢᴇ ᴛʜᴇ ᴀᴄᴄᴇꜱꜱ ᴍᴏᴅᴇ ʟɪᴠᴇ.</i>"
+                ),
+            )
+        except Exception as e:
+            log.warning(f"Couldn't message the owner ({e}). Send /start to the bot from the OWNER_ID account.")
 
     async def stop(self, *args):
+        if self._web_runner:
+            await self._web_runner.cleanup()
         await super().stop()
-        self.LOGGER(__name__).info("Bot stopped.contact @the_universal_being")
+        try:
+            await dbclient.close()
+        except Exception:
+            pass
+        self.LOGGER(__name__).info("Bot stopped. Contact @the_universal_being")
 
 # ────────────────────────────────────────────────────────────────
 
@@ -145,6 +128,6 @@ class Bot(Client):
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
