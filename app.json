@@ -1,147 +1,173 @@
 {
-    "name": "TG File Share/Sharing Bot",
-    "description": "file sharing bot store posts and it can access by special links",
-    "keywords": [
-      "telegram",
-      "file",
-      "sharing"
-    ],
-    "repository": "https://github.com/Trinity-Mods/File-Store-Bot/tree/main",
-    "logo": "https://freeimage.host/i/FaO7wzP",
-    "env": {
-        "ADMINS" : {
-            "description" : "Enter admins no need to add owner id, add with no commas and no hyphens",
-            "value": "",
-            "required": false
-        },
-      "TG_BOT_TOKEN": {
-        "description": "Your Bot token, Get it from @Botfather",
-        "value": ""
-      },
-      "APP_ID":{
-        "description": "your app id, take it from my.telegram.org",
-        "value": ""
-      },
-      "API_HASH":{
-        "description": "your api hash, take it from my.telegram.org",
-        "value": ""
-      },
-      "DB_URL": {
-        "description": "Paste your mongo db url",
-        "value": ""
-      },
-      "DB_NAME":{
-        "description": "Enter your DATABASE_NAME ",
-        "value": "",
-        "required":false
-      },
-      "CHANNEL_ID":{
-        "description": "make a channel (database channel), then make the bot as admin in channel, and it's put channel id",
-        "value": ""
-      },
-      "OWNER_ID": {
-        "description": "enter owners id",
-        "value" : ""
-      },
-      "OWNER_TAG":{
-        "description":"Enter owner's tag without @",
-        "value": ""
-      },
-      "TIME": {
-        "description":"Enter the time after which message gets deleted",
-        "value": "60",
-        "required": false
-      },
-      "FORCE_SUB_CHANNEL": {
-        "description": "Enter your channel id for forcesub 1",
-        "value": "0",
-        "required": false
-      },
-      "FORCE_SUB_CHANNEL2": {
-        "description": "Enter your channel id for forcesub 2 ",
-        "value": "0",
-        "required": false
-      },
-      "FORCE_SUB_CHANNEL3": {
-        "description": "Enter your channel id for forcesub 1",
-        "value": "0",
-        "required": false
-      },
-      "FORCE_SUB_CHANNEL4": {
-        "description": "Enter your channel id for forcesub 1",
-        "value": "0",
-        "required": false
-      },
-      "BOT_STATS_TEXT": {
-        "description": "Enter your custom bot stat text with fillings",
-        "value": "<b>BOT UPTIME</b>\n{uptime}",
-        "required": false
-      },
-      "USER_REPLY_TEXT":{
-        "description": "Enter user reply text when they interact with bot",
-        "value": "❌Don't send me messages directly I'm only File Share bot!",
-        "required" : false
-      },
-      "START_MSG":{
-        "description":"Enter your bot start message when user interact for the first time.",
-        "value": "Hello {first}\n\nI can store private files in Specified Channel and other users can access it from special link.",
-        "required": false
-      },
-      "USE_SHORTLINK":{
-        "description":"Enter True for enabling this feature",
-        "value": "False",
-        "required": false
-      },
-      "SHORTLINK_API_URL": {
-        "description":"Enter your shortlink url",
-        "value" : "",
-        "required":false
-      },
-      "SHORTLINK_API_KEY":{
-        "description": "Enter your shortlink api key",
-        "value" : "",
-        "required" : false
-      },
-      "VERIFY_EXPIRE": {
-        "description" : "Enter your expiration time 24hr = 86400 12hr = 43200",
-        "value": "86400",
-        "required": false
-      },
-      "TUT_VID": {
-        "description" : "Enter tutorial link url",
-        "value": "https://t.me/infohub_updates/34",
-        "required": false
-      },
-      "FORCE_MSG": {
-        "description": "Force message for joining the channel",
-        "value" : "Hello {first}\n\n<b>You need to join in my Channel/Group to use me\n\nKindly Please join Channel</b>",
-        "required": false
-      },
-      "CUSTOM_CAPTION": {
-        "description": "Enter custom caption",
-        "value": null, 
-        "required": false
-      },
-      "PROTECT_CONTENT": {
-        "description" : "Enter True if need to stop forwarding from bot",
-        "value" : "False",
-        "required": false
-      },
-      "DISABLE_CHANNEL_BUTTON": {
-        "description" : "Enter False if need to enable buttons in database channel",
-        "value" : "True",
-        "required" : false
-      }
+  "name": "File Store Bot",
+  "description": "Telegram file store bot by Trinity Mods — private share links, 0-4 force-sub channels, referral & dual access modes, start image, shortener earnings, auto-delete and premium.",
+  "keywords": [
+    "telegram",
+    "file-store",
+    "file-sharing",
+    "force-sub",
+    "referral",
+    "pyrofork",
+    "mongodb"
+  ],
+  "repository": "https://github.com/Trinity-Mods/File-Store-Bot",
+  "website": "https://github.com/Trinity-Mods",
+  "logo": "https://raw.githubusercontent.com/Trinity-Mods/File-Store-Bot/main/assets/icon.png",
+  "success_url": "/",
+  "env": {
+    "TG_BOT_TOKEN": {
+      "description": "Your bot token from @BotFather."
     },
-    "buildpacks": [
-      {
-        "url": "heroku/python"
-      }
-    ],
-    "formation": {
-      "worker": {
-        "quantity": 1,
-        "size": "eco"
-      }
+    "APP_ID": {
+      "description": "Your API ID from https://my.telegram.org/apps"
+    },
+    "API_HASH": {
+      "description": "Your API hash from https://my.telegram.org/apps"
+    },
+    "CHANNEL_ID": {
+      "description": "ID of your private database channel (starts with -100). Make the bot an admin there."
+    },
+    "OWNER_ID": {
+      "description": "Your own Telegram user ID."
+    },
+    "DB_URL": {
+      "description": "MongoDB connection URL (free cluster: https://www.mongodb.com/atlas)."
+    },
+    "DB_NAME": {
+      "description": "MongoDB database name.",
+      "value": "FileStoreBot",
+      "required": false
+    },
+    "OWNER_TAG": {
+      "description": "Your public Telegram username without @ (shown to users for support & payments).",
+      "value": "",
+      "required": false
+    },
+    "ADMINS": {
+      "description": "Extra admin user IDs separated by spaces (the owner is always an admin).",
+      "value": "",
+      "required": false
+    },
+    "ACCESS_MODE": {
+      "description": "How users unlock files: fsub (join channels), referral (invite users), dual (join channels, then invite) or off.",
+      "value": "fsub",
+      "required": false
+    },
+    "FORCE_SUB_CHANNEL": {
+      "description": "Force-sub chat 1 — channel/group ID (-100...) or @username. Leave empty to skip. The bot must be admin there.",
+      "value": "",
+      "required": false
+    },
+    "FORCE_SUB_CHANNEL2": {
+      "description": "Force-sub chat 2 (optional).",
+      "value": "",
+      "required": false
+    },
+    "FORCE_SUB_CHANNEL3": {
+      "description": "Force-sub chat 3 (optional).",
+      "value": "",
+      "required": false
+    },
+    "FORCE_SUB_CHANNEL4": {
+      "description": "Force-sub chat 4 (optional).",
+      "value": "",
+      "required": false
+    },
+    "REFERRAL_COUNT": {
+      "description": "Referral / dual mode: how many NEW users someone must invite to unlock files.",
+      "value": "3",
+      "required": false
+    },
+    "REFERRAL_EXPIRE": {
+      "description": "Referral / dual mode: seconds files stay unlocked after reaching the goal (0 = forever).",
+      "value": "0",
+      "required": false
+    },
+    "START_PIC": {
+      "description": "Image sent with the start message — a direct image link, a Telegram file_id or a repo path like assets/start.jpg. Leave empty for none.",
+      "value": "",
+      "required": false
+    },
+    "FORCE_PIC": {
+      "description": "Optional image for the force-sub message.",
+      "value": "",
+      "required": false
+    },
+    "REFERRAL_PIC": {
+      "description": "Optional image for the referral screen.",
+      "value": "",
+      "required": false
+    },
+    "TIME": {
+      "description": "Delete delivered files after this many seconds (0 = never).",
+      "value": "600",
+      "required": false
+    },
+    "PROTECT_CONTENT": {
+      "description": "TRUE stops users from forwarding or saving delivered files.",
+      "value": "FALSE",
+      "required": false
+    },
+    "DISABLE_CHANNEL_BUTTON": {
+      "description": "TRUE = no 'Share URL' button under posts in the database channel.",
+      "value": "TRUE",
+      "required": false
+    },
+    "USE_SHORTLINK": {
+      "description": "TRUE to earn with a URL shortener.",
+      "value": "FALSE",
+      "required": false
+    },
+    "SHORTLINK_API_URL": {
+      "description": "Shortener website without https:// (e.g. gplinks.com).",
+      "value": "gplinks.com",
+      "required": false
+    },
+    "SHORTLINK_API_KEY": {
+      "description": "API key of your shortener.",
+      "value": "",
+      "required": false
+    },
+    "U_S_E_P": {
+      "description": "TRUE = every link goes through the shortener. FALSE = users verify a token once every VERIFY_EXPIRE seconds.",
+      "value": "TRUE",
+      "required": false
+    },
+    "VERIFY_EXPIRE": {
+      "description": "Seconds a verified token stays valid (43200 = 12 hours).",
+      "value": "43200",
+      "required": false
+    },
+    "TUT_VID": {
+      "description": "Tutorial link showing users how to pass your shortener.",
+      "value": "https://t.me/trinityXmods/53",
+      "required": false
+    },
+    "USE_PAYMENT": {
+      "description": "TRUE shows premium plans (works with USE_SHORTLINK). Premium users skip the shortener and referrals.",
+      "value": "TRUE",
+      "required": false
+    },
+    "UPI_ID": {
+      "description": "Your UPI ID for premium payments.",
+      "value": "",
+      "required": false
+    },
+    "UPI_IMAGE_URL": {
+      "description": "Direct link to your UPI QR code image.",
+      "value": "",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "eco"
     }
   }
+}
