@@ -1,0 +1,140 @@
+# ────────────────────────────────────────────────────────────────
+
+# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
+# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
+
+# ────────────────────────────────────────────────────────────────
+
+# 🧪 Test deploy — on every update, the bot is deployed to a clean server exactly like Docker, Koyeb or a
+# VPS would do it: the Docker image is built, every module and Telegram handler is booted inside it, the
+# health-check server is called, and the database layer runs against a real MongoDB server.
+# The result appears under "Deployments" on the repo page as "File Store Bot (Test Deploy)".
+# (No Telegram account is used — the test never logs in or messages anyone.)
+
+name: Test Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-deploy:
+    name: 🧪 Build & boot the bot
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: File Store Bot (Test Deploy)
+      url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+    services:
+      mongo:
+        image: mongo:8.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok'"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+
+    steps:
+      - name: 📥 Get the code
+        uses: actions/checkout@v7
+
+      - name: 🐳 Build the Docker image
+        run: docker build -t file-store-bot .
+
+      - name: 🚀 Boot the bot inside the image
+        run: |
+          docker run --rm -i --network host \
+            -e TG_BOT_TOKEN=123456:TEST-DEPLOY \
+            -e APP_ID=12345 \
+            -e API_HASH=0123456789abcdef0123456789abcdef \
+            -e CHANNEL_ID=-1001234567890 \
+            -e OWNER_ID=1 \
+            -e DB_URL=mongodb://127.0.0.1:27017 \
+            -e DB_NAME=TestDeploy \
+            -e ACCESS_MODE=dual \
+            -e FORCE_SUB_CHANNEL=-1001234567891 \
+            -e FORCE_SUB_CHANNEL2=@trinityXmods \
+            -e START_PIC=assets/start.jpg \
+            file-store-bot python3 - <<'PY'
+          import asyncio
+          import os
+          import time
+
+          from aiohttp.test_utils import TestClient, TestServer
+
+          import config
+          from bot import Bot
+          from core import __version__, access
+          from database import database as db
+          from plugins import web_server
+
+
+          async def main():
+              bot = Bot()
+              bot.load_plugins()
+              await asyncio.sleep(0.5)
+              handlers = sum(len(group) for group in bot.dispatcher.groups.values())
+              assert handlers >= 26, f"only {handlers} handlers loaded"
+              print(f"✅ {handlers} Telegram commands & buttons loaded")
+
+              assert config.ACCESS_MODE == "dual" and config.FORCE_SUB_CHANNELS == [-1001234567891, "trinityXmods"]
+              assert os.path.isfile(config.START_PIC)
+              print("✅ config parsed — dual mode, 2 force-sub chats, start picture found")
+
+              async with TestClient(TestServer(await web_server())) as client:
+                  response = await client.get("/")
+                  assert response.status == 200 and (await response.json())["status"] == "running"
+              print("✅ health-check endpoint answers")
+
+              await db.ping_database()
+              await db.ensure_indexes()
+              assert await db.register_user(1001)
+              assert await db.register_user(1002, referrer=1001)
+              assert not await db.register_user(1002, referrer=1001)
+              referrer = await db.confirm_referral(1002)
+              assert referrer and referrer["referrals"] == 1
+              assert await db.confirm_referral(1002) is None
+              assert await db.consume_referrals(1001, 1, 3600)
+              assert not await db.consume_referrals(1001, 1, 3600)
+              await access.update(mode="referral", referral_count=5)
+              assert (await access.load()).referral_count == 5
+              await access.reset()
+              job = await db.add_delete_job(1001, [1, 2], time.time(), 3, "check")
+              assert len(await db.pending_delete_jobs()) == 1
+              await db.remove_delete_job(job)
+              await db.mark_blocked(1002)
+              assert 1002 not in await db.full_userbase()
+              print("✅ MongoDB layer works on a real server — users, referrals, settings, auto-delete")
+
+              print(f"🚀 File Store Bot v{__version__} deployed and booted successfully")
+
+
+          asyncio.run(main())
+          PY
+
+# ────────────────────────────────────────────────────────────────
+
+# ✅ THIS PROJECT IS DEVELOPED AND MAINTAINED BY @trinityXmods (TELEGRAM)
+# 🚫 DO NOT REMOVE OR ALTER THIS CREDIT LINE UNDER ANY CIRCUMSTANCES.
+
+# ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
+# 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
+
+# ────────────────────────────────────────────────────────────────
