@@ -5,13 +5,16 @@
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
 
+# 🚀 Start the bot with:  python3 main.py
 
 from bot import Bot
-Bot().run()
+
+if __name__ == "__main__":
+    Bot().run()
 
 
 # ────────────────────────────────────────────────────────────────
@@ -21,7 +24,6 @@ Bot().run()
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
-
