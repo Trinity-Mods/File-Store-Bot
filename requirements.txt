@@ -5,27 +5,21 @@
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
 
-
-pyrofork
-TgCrypto
-pyromod==1.5
-python-dotenv
-pymongo
-motor
-umongo
-marshmallow
-dnspython
-pytz
-requests
-bs4
-shortzy
-aiohttp
-aiofiles
-asyncio
+# Telegram framework (conversations / client.ask() are built in) + its fast encryption add-on
+pyrofork~=2.3.69
+tgcrypto-pyrofork~=1.2.8
+# MongoDB — PyMongo's native asyncio client (the successor of Motor); mongodb+srv:// links work out of the box
+pymongo~=4.18
+# Shortener API wrapper
+shortzy~=0.0.8
+# Health-check web server
+aiohttp~=3.14
+# Reads settings from a .env file
+python-dotenv~=1.2
 
 # ────────────────────────────────────────────────────────────────
 
@@ -34,7 +28,6 @@ asyncio
 
 # ⭐ FOR MORE HIGH-QUALITY OPEN-SOURCE BOTS, FOLLOW US ON GITHUB.
 # 🔗 OFFICIAL GITHUB: https://github.com/Trinity-Mods
-# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @velvetexams
+# 📩 NEED HELP OR HAVE QUESTIONS? REACH OUT VIA TELEGRAM: @the_universal_being
 
 # ────────────────────────────────────────────────────────────────
-
