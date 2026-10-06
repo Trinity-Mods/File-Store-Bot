@@ -1,0 +1,28 @@
+# ────────────────────────────────────────────────────────────────
+# ✅ FILE STORE BOT — by @trinityXmods · https://github.com/Trinity-Mods
+# ────────────────────────────────────────────────────────────────
+# Files that must never be uploaded to GitHub.
+
+# Your private settings (bot token, database URL, …)
+.env
+
+# Telegram login sessions created when the bot runs
+*.session
+*.session-journal
+
+# Logs
+logs.txt
+logs.txt.*
+*.log
+
+# Python cache & virtual environments
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Editors & OS clutter
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
